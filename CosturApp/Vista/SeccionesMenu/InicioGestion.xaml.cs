@@ -10,20 +10,18 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace CosturApp.Vista
+namespace CosturApp.Vista.SeccionesMenu
 {
     /// <summary>
-    /// Lógica de interacción para MainWindow.xaml
+    /// Lógica de interacción para InicioGestion.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class InicioGestion : UserControl
     {
-        public MainWindow()
+        public InicioGestion()
         {
             InitializeComponent();
-            DataContext = new VistaModelo.MainViewModel();
         }
     }
 }
