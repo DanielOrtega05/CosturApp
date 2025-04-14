@@ -1,0 +1,56 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading.Tasks;
+using CosturApp.Modelo;
+using CosturApp.Vista;
+
+namespace CosturApp.VistaModelo
+{
+    public class GestionPrincipalViewModel : INotifyPropertyChanged
+    {
+        public ObservableCollection<MenuItemModel> MenuItems { get; set; }
+
+        private MenuItemModel _selectedMenuItem;
+        public MenuItemModel SelectedMenuItem
+        {
+            get => _selectedMenuItem;
+            set
+            {
+                if (_selectedMenuItem != value)
+                {
+                    _selectedMenuItem = value;
+                    OnPropertyChanged(nameof(SelectedMenuItem));
+
+                    CurrentView = _selectedMenuItem?.View;
+                }
+            }
+        }
+
+        private object _currentView;
+        public object CurrentView
+        {
+            get => _currentView;
+            set { _currentView = value; OnPropertyChanged(nameof(CurrentView)); }
+        }
+
+        public GestionPrincipalViewModel()
+        {
+            MenuItems = new ObservableCollection<MenuItemModel>
+        {
+            new MenuItemModel { Title = "Inicio", Icon = "Home", View = new Vista.SeccionesMenu.InicioGestion() },
+        };
+            SelectedMenuItem = MenuItems.FirstOrDefault();
+            CurrentView = SelectedMenuItem?.View;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string name = null) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+    }
+
+}

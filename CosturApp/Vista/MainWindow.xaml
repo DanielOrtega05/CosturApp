@@ -6,6 +6,7 @@
         Title="CosturApp - Inicio" 
         Height="500" Width="850"
         MinHeight="450" MinWidth="800"
+        Icon="/Imagenes/Logo/CosturApp.ico"
         Style="{StaticResource MaterialDesignWindow}">
 
     <Grid Background="{DynamicResource MaterialDesignPaper}">
@@ -13,9 +14,9 @@
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="600">
             <!-- Logo + Título -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 0 0 20">
-                <materialDesign:PackIcon Kind="TshirtCrew" Width="60" Height="60" 
-                                         Foreground="{DynamicResource PrimaryHueLightBrush}"/>
-                <TextBlock Text="CosturApp" FontSize="40" FontWeight="Bold" Margin="20 0 0 0"
+                <Image Source="/Imagenes/Logo/CosturApp.png"
+                            Width="80" Height="80" Stretch="Uniform"/>
+                <TextBlock Text="CosturApp" FontSize="40" FontWeight="Bold" Margin="5 0 0 0" VerticalAlignment="Center"
                            Foreground="{DynamicResource MaterialDesignBody}"/>
             </StackPanel>
 

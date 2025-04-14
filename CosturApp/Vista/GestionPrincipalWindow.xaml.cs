@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using CosturApp.VistaModelo;
 
 namespace CosturApp.Vista
 {
@@ -22,9 +23,11 @@ namespace CosturApp.Vista
         public GestionPrincipalWindow()
         {
             InitializeComponent();
+            DataContext = new GestionPrincipalViewModel();
             this.PreviewKeyDown += new KeyEventHandler(HandleTeclas);
         }
 
+        // Agrego funciones con tecla 
         private void HandleTeclas(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
@@ -38,5 +41,13 @@ namespace CosturApp.Vista
                 this.WindowState = WindowState.Maximized;
             }
         }
+
+        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Cierra el menu al seleccionar un item
+            MaterialDesignThemes.Wpf.DrawerHost.CloseDrawerCommand.Execute("Left", mn_principal);
+
+        }
+
     }
 }

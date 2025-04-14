@@ -8,11 +8,80 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
+        Icon="/Imagenes/Logo/CosturApp.ico"
         Title="GestionPrincipalWindow" Height="450" Width="800" Style="{StaticResource MaterialDesignWindow}">
-    <Grid Background="{DynamicResource MaterialDesignPaper}">
-        <TextBlock Text="Pantalla principal de gestión" 
-                   HorizontalAlignment="Center"
+    <materialDesign:DrawerHost x:Name="mn_principal">
+        <!-- Menu Lateral -->
+        <materialDesign:DrawerHost.LeftDrawerContent>
+            <StackPanel Background="{DynamicResource PrimaryHueLightBrush}" Width="250">
+                <!-- Cabecera -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="16 20">
+                    <materialDesign:PackIcon Kind="Menu" 
+                                           Foreground="White"
+                                           Width="24" Height="24"/>
+                    <TextBlock Text="Menú Principal" 
+                             Margin="10 3 0 0"
+                             FontSize="18"
+                             Foreground="White"/>
+                </StackPanel>
+
+                <!-- Items del Menu -->
+                <ListView ItemsSource="{Binding MenuItems}"
+                        SelectedItem="{Binding SelectedMenuItem}"
+                        BorderThickness="0"
+                        Background="Transparent"
+                        SelectionChanged="ListView_SelectionChanged">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="16 8">
+                                <materialDesign:PackIcon Kind="{Binding Icon}" 
+                                                       Foreground="White"
+                                                       Width="20" Height="20"/>
+                                <TextBlock Text="{Binding Title}" 
+                                         Margin="10 3 0 0"
+                                         Foreground="White"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+        </materialDesign:DrawerHost.LeftDrawerContent>
+
+        <!-- Contenido Principal de la ventana -->
+        <Grid Background="{DynamicResource MaterialDesignPaper}">
+            <Grid.RowDefinitions>
+                <!-- Cabecera -->
+                <RowDefinition Height="60"/>
+                <!-- Contenido principal -->
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Cabecera superior -->
+            <DockPanel Grid.Row="0"
+               Background="{DynamicResource PrimaryHueLightBrush}"
+               VerticalAlignment="Center">
+                
+                <!-- Boton del menu -->
+                <Button Command="{x:Static materialDesign:DrawerHost.OpenDrawerCommand}"
+                CommandParameter="Left"
+                Style="{StaticResource MaterialDesignIconButton}"
+                Margin="10"
+                ToolTip="Abrir menú" Height="30" Width="30">
+                    <materialDesign:PackIcon Kind="Menu" Foreground="white"/>
+                </Button>
+
+                <!-- Titulo de la seccion -->
+                <TextBlock Text="{Binding SelectedMenuItem.Title}"
                    VerticalAlignment="Center"
-                   FontSize="24"/>
-    </Grid>
+                   Foreground="White"
+                   FontSize="20"
+                   FontWeight="Bold"
+                   Margin="20,0,10,0"/>
+            </DockPanel>
+
+            <!-- Contenedor dinamico / APARECE CONTENIDO MENU-->
+            <ContentControl Grid.Row="1" Content="{Binding CurrentView}" Margin="40 10"/>
+        </Grid>
+
+    </materialDesign:DrawerHost>
 </Window>
