@@ -6,18 +6,27 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Threading;
+using CosturApp.Servicio;
 
 namespace CosturApp.VistaModelo
 {
     public class MainViewModel : INotifyPropertyChanged
     {
-        public string FechaActual => DateTime.Now.ToString("dddd, dd MMMM yyyy - HH:mm");
+        public ICommand ComenzarCommand { get; }
 
         public MainViewModel()
         {
-            var timer = new DispatcherTimer { Interval = TimeSpan.FromMinutes(1) };
-            timer.Tick += (s, e) => OnPropertyChanged(nameof(FechaActual));
-            timer.Start();
+            ComenzarCommand = new RelayCommand(Comenzar);
+        }
+
+        private void Comenzar()
+        {
+            // Crea la nueva ventana y la muestra
+            var gestionWindow = new Vista.GestionPrincipalWindow();
+            gestionWindow.Show();
+
+            // Cierra la ventana abierta actual
+            App.Current.Windows[0]?.Close();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
