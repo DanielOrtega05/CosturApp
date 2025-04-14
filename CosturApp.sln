@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35919.96 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosturApp", "CosturApp\CosturApp.csproj", "{5E4708E6-C7BF-4B93-AE9F-55573D243126}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5E4708E6-C7BF-4B93-AE9F-55573D243126}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E4708E6-C7BF-4B93-AE9F-55573D243126}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E4708E6-C7BF-4B93-AE9F-55573D243126}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E4708E6-C7BF-4B93-AE9F-55573D243126}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C1ACF55C-10CF-4A13-AE18-7D028665CCB1}
+	EndGlobalSection
+EndGlobal
