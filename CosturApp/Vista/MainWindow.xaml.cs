@@ -23,6 +23,7 @@ namespace CosturApp.Vista
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new VistaModelo.MainViewModel();
         }
     }
 }
