@@ -19,6 +19,8 @@ namespace CosturApp.VistaModelo
         private Anexo _anexoSeleccionado;
         private RelayCommand _editarAnexoCommand;
         private RelayCommand _eliminarAnexoCommand;
+        private AnexoService _servicio;
+
 
         public ObservableCollection<Anexo> ListaAnexos { get; set; }
 
@@ -41,7 +43,10 @@ namespace CosturApp.VistaModelo
 
         public AnexoViewModel()
         {
-            ListaAnexos = new ObservableCollection<Anexo>();
+            // inicio bd anexo
+            _servicio = new AnexoService();
+            ListaAnexos = new ObservableCollection<Anexo>(_servicio.ObtenerAnexos());
+
             CrearAnexoCommand = new RelayCommand(CrearAnexo);
             _editarAnexoCommand = new RelayCommand(EditarAnexo, () => AnexoSeleccionado != null);
             _eliminarAnexoCommand = new RelayCommand(EliminarAnexo, () => AnexoSeleccionado != null);
@@ -60,7 +65,7 @@ namespace CosturApp.VistaModelo
                 };
 
                 ListaAnexos.Add(nuevo);
-                AnexoSeleccionado = nuevo;
+                _servicio.AgregarAnexo(nuevo);
             }
         }
 
@@ -85,9 +90,9 @@ namespace CosturApp.VistaModelo
                 if (resultado == MessageBoxResult.Yes)
                 {
                     MessageBox.Show("Se ha eliminado el Anexo con titulo: " + AnexoSeleccionado.Titulo, "Eliminado Exitosamente", MessageBoxButton.OK, MessageBoxImage.Information);
+                    _servicio.EliminarAnexo(AnexoSeleccionado.Id);
                     ListaAnexos.Remove(AnexoSeleccionado);
-                    AnexoSeleccionado = null;
-                    
+
                 }
             }
         }
