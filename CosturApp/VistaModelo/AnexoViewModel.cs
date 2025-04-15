@@ -96,7 +96,6 @@ namespace CosturApp.VistaModelo
             }
         }
 
-
         // Notifica los cambios de una propiedad a la vista xaml 
 
         public event PropertyChangedEventHandler PropertyChanged;

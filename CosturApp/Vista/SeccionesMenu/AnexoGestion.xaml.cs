@@ -26,5 +26,6 @@ namespace CosturApp.Vista.SeccionesMenu
             InitializeComponent();
             DataContext = new AnexoViewModel();
         }
+
     }
 }

@@ -25,7 +25,9 @@
                   Margin="0 0 0 10"
                   RowBackground="{DynamicResource MaterialDesignPaper}"
                   AlternatingRowBackground="{DynamicResource MaterialDesignCardBackground}">
-
+            <DataGrid.InputBindings>
+                <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding EditarAnexoCommand}" />
+            </DataGrid.InputBindings>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Título" Binding="{Binding Titulo}" Width="*" />
                 <DataGridTextColumn Header="Fecha de creación" Binding="{Binding FechaCreacion, StringFormat='dd/MM/yyyy'}" Width="*" />
