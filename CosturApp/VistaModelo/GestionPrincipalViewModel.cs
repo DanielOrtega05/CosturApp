@@ -43,6 +43,7 @@ namespace CosturApp.VistaModelo
             MenuItems = new ObservableCollection<MenuItemModel>
         {
             new MenuItemModel { Title = "Inicio", Icon = "Home", View = new Vista.SeccionesMenu.InicioGestion() },
+            new MenuItemModel { Title = "Anexo", Icon = "File", View = new Vista.SeccionesMenu.AnexoGestion() },
         };
             SelectedMenuItem = MenuItems.FirstOrDefault();
             CurrentView = SelectedMenuItem?.View;
