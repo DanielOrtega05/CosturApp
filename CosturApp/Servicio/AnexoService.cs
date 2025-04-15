@@ -21,9 +21,10 @@ namespace CosturApp.Servicio
                 SQLiteConnection.CreateFile(_rutaDB);
 
             CrearTablaSiNoExiste();
+            CrearTablaOrdenesSiNoExiste();
         }
 
-        // Crear la tabla de anexos
+        // Crear la tabla de anexos si no existe
         private void CrearTablaSiNoExiste()
         {
             using (var conexion = new SQLiteConnection(_cadenaConexion))
@@ -41,6 +42,26 @@ namespace CosturApp.Servicio
             }
         }
 
+        // Crear tabla de ordenes si no existe
+        private void CrearTablaOrdenesSiNoExiste()
+        {
+            using (var conexion = new SQLiteConnection(_cadenaConexion))
+            {
+                conexion.Open();
+                string query = @"CREATE TABLE IF NOT EXISTS Ordenes (
+                            Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            NumeroOrden TEXT NOT NULL,
+                            TotalCamisetas INTEGER NOT NULL,
+                            AnexoId INTEGER,
+                            FOREIGN KEY(AnexoId) REFERENCES Anexos(Id)
+                         )";
+                using (var cmd = new SQLiteCommand(query, conexion))
+                {
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
         // Hace insert de los anexos
         public void AgregarAnexo(Anexo anexo)
         {
@@ -51,7 +72,7 @@ namespace CosturApp.Servicio
                 using (var cmd = new SQLiteCommand(query, conexion))
                 {
                     cmd.Parameters.AddWithValue("@titulo", anexo.Titulo);
-                    cmd.Parameters.AddWithValue("@fecha", anexo.FechaCreacion.ToString("o")); // formato ISO 8601
+                    cmd.Parameters.AddWithValue("@fecha", anexo.FechaCreacion.ToString("o")); // formato ISO 8601 / es el formato para fecha y hora redondeado
                     cmd.ExecuteNonQuery();
                 }
             }

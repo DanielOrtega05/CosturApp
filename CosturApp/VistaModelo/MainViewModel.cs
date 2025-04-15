@@ -29,6 +29,7 @@ namespace CosturApp.VistaModelo
             App.Current.Windows[0]?.Close();
         }
 
+        // Notifica los cambios de una propiedad a la vista xaml 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

@@ -20,8 +20,6 @@ namespace CosturApp.VistaModelo
         private RelayCommand _editarAnexoCommand;
         private RelayCommand _eliminarAnexoCommand;
         private AnexoService _servicio;
-
-
         public ObservableCollection<Anexo> ListaAnexos { get; set; }
 
         public Anexo AnexoSeleccionado
@@ -31,7 +29,7 @@ namespace CosturApp.VistaModelo
             {
                 _anexoSeleccionado = value;
                 OnPropertyChanged();
-                _editarAnexoCommand.RaiseCanExecuteChanged();
+                _editarAnexoCommand.RaiseCanExecuteChanged(); // Comprobar los cambios 
                 _eliminarAnexoCommand.RaiseCanExecuteChanged();
             }
         }
@@ -74,7 +72,8 @@ namespace CosturApp.VistaModelo
         {
             if (AnexoSeleccionado != null)
             {
-                // Por ahora no hace nada
+                var ventana = new AnexoDetalleWindow(AnexoSeleccionado);
+                ventana.ShowDialog();
             }
         }
 
