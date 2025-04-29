@@ -6,6 +6,8 @@ using System.Windows;
 using System.Windows.Input;
 using CosturApp.Modelo;
 using CosturApp.Servicio;
+using CosturApp.Vista.VentanasSecundarias;
+using MaterialDesignColors;
 
 namespace CosturApp.VistaModelo
 {
@@ -34,6 +36,7 @@ namespace CosturApp.VistaModelo
 
         public Anexo Anexo => _anexo;
 
+        // Solo notifica si se añade o elimina objeto, no si se edita
         public ObservableCollection<Orden> Ordenes
         {
             get => _ordenes;
@@ -62,24 +65,35 @@ namespace CosturApp.VistaModelo
 
         private void AgregarOrden()
         {
-            // Codigo ejemplo
-            var nueva = new Orden
-            {
-                AnexoId = _anexo.Id,
-                NumeroOrden = "Nuevo",
-                TotalCamisetas = 0
-            };
+            var ventana = new OrdenCrearWindow();
 
-            _ordenService.AgregarOrden(nueva);
-            Ordenes.Add(nueva);
+            if (ventana.ShowDialog() == true)
+            {
+                var nuevaOrden = new Orden
+                {
+                    NumeroOrden = ventana.txbNumeroOrden.Text,
+                    TotalCamisetas = int.TryParse(ventana.txbCantidad.Text, out var cantidad) ? cantidad : 0,
+                    TipoCamisa = ventana.cmbTipoCamisa.Text,
+                    AnexoId = _anexo.Id
+                };
+
+                _ordenService.AgregarOrden(nuevaOrden);
+                Ordenes.Add(nuevaOrden);
+            }
+
         }
 
         private void EditarOrden()
         {
             if (OrdenSeleccionada != null)
             {
-                // Codigo Ejemplo
-                MessageBox.Show($"Editar orden: {OrdenSeleccionada.NumeroOrden}", "Editar", MessageBoxButton.OK);
+                var ventana = new OrdenCrearWindow(OrdenSeleccionada); // Pasamos la orden seleccionada a la ventana
+
+                if (ventana.ShowDialog() == true)
+                {
+                    // Si la ventana devuelve true, se ha actualizado la orden
+                    _ordenService.EditarOrden(OrdenSeleccionada); // Actualizamos la orden en la base de datos
+                }
             }
         }
 

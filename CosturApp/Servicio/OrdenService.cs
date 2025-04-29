@@ -30,13 +30,15 @@ namespace CosturApp.Servicio
                             Id INTEGER PRIMARY KEY AUTOINCREMENT,
                             NumeroOrden TEXT NOT NULL,
                             TotalCamisetas INTEGER NOT NULL,
+                            TipoCamisa TEXT NOT NULL,
                             AnexoId INTEGER,
                             FOREIGN KEY(AnexoId) REFERENCES Anexos(Id)
-                         )";
+                            )";
                 using (var cmd = new SQLiteCommand(query, conexion))
                 {
                     cmd.ExecuteNonQuery();
                 }
+
             }
         }
 
@@ -46,11 +48,12 @@ namespace CosturApp.Servicio
             using (var conexion = new SQLiteConnection(_cadenaConexion))
             {
                 conexion.Open();
-                string query = "INSERT INTO Ordenes (NumeroOrden, TotalCamisetas, AnexoId) VALUES (@numeroOrden, @totalCamisetas, @anexoId)";
+                string query = "INSERT INTO Ordenes (NumeroOrden, TotalCamisetas, TipoCamisa, AnexoId) VALUES (@numeroOrden, @totalCamisetas, @tipoCamisa, @anexoId)";
                 using (var cmd = new SQLiteCommand(query, conexion))
                 {
                     cmd.Parameters.AddWithValue("@numeroOrden", orden.NumeroOrden);
                     cmd.Parameters.AddWithValue("@totalCamisetas", orden.TotalCamisetas);
+                    cmd.Parameters.AddWithValue("@tipoCamisa", orden.TipoCamisa);
                     cmd.Parameters.AddWithValue("@anexoId", orden.AnexoId); // Relacionado con el anexo
                     cmd.ExecuteNonQuery();
                 }
@@ -65,7 +68,7 @@ namespace CosturApp.Servicio
             using (var conexion = new SQLiteConnection(_cadenaConexion))
             {
                 conexion.Open();
-                string query = "SELECT Id, NumeroOrden, TotalCamisetas, AnexoId FROM Ordenes WHERE AnexoId = @idAnexo";
+                string query = "SELECT Id, NumeroOrden, TotalCamisetas, TipoCamisa, AnexoId FROM Ordenes WHERE AnexoId = @idAnexo";
 
                 using (var cmd = new SQLiteCommand(query, conexion))
                 {
@@ -79,6 +82,7 @@ namespace CosturApp.Servicio
                                 Id = Convert.ToInt32(reader["Id"]),
                                 NumeroOrden = reader["NumeroOrden"].ToString(),
                                 TotalCamisetas = Convert.ToInt32(reader["TotalCamisetas"]),
+                                TipoCamisa = reader["TipoCamisa"].ToString(),
                                 AnexoId = Convert.ToInt32(reader["AnexoId"])
                             });
                         }
@@ -110,11 +114,12 @@ namespace CosturApp.Servicio
             using (var conexion = new SQLiteConnection(_cadenaConexion))
             {
                 conexion.Open();
-                string query = "UPDATE Ordenes SET NumeroOrden = @numeroOrden, TotalCamisetas = @totalCamisetas WHERE Id = @id";
+                string query = "UPDATE Ordenes SET NumeroOrden = @numeroOrden, TotalCamisetas = @totalCamisetas, TipoCamisa = @tipoCamisa WHERE Id = @id";
                 using (var cmd = new SQLiteCommand(query, conexion))
                 {
                     cmd.Parameters.AddWithValue("@numeroOrden", orden.NumeroOrden);
                     cmd.Parameters.AddWithValue("@totalCamisetas", orden.TotalCamisetas);
+                    cmd.Parameters.AddWithValue("@tipoCamisa", orden.TipoCamisa);
                     cmd.Parameters.AddWithValue("@id", orden.Id);
                     cmd.ExecuteNonQuery();
                 }

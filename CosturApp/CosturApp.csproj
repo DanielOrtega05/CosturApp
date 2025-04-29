@@ -85,6 +85,7 @@
     </ApplicationDefinition>
     <Compile Include="Modelo\Anexo.cs" />
     <Compile Include="Modelo\Orden.cs" />
+    <Compile Include="Modelo\TipoCamisas.cs" />
     <Compile Include="Servicio\AnexoService.cs" />
     <Compile Include="Servicio\OrdenService.cs" />
     <Compile Include="VistaModelo\AnexoDetalleViewModel.cs" />
@@ -100,6 +101,9 @@
     </Compile>
     <Compile Include="Vista\VentanasSecundarias\AnexoDetalleWindow.xaml.cs">
       <DependentUpon>AnexoDetalleWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Vista\VentanasSecundarias\OrdenCrearWindow.xaml.cs">
+      <DependentUpon>OrdenCrearWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Vista\GestionPrincipalWindow.xaml">
       <SubType>Designer</SubType>
@@ -137,6 +141,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Vista\VentanasSecundarias\AnexoDetalleWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Vista\VentanasSecundarias\OrdenCrearWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
