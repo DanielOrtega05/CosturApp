@@ -1,0 +1,56 @@
+﻿<UserControl x:Class="CosturApp.Vista.SeccionesMenu.AnexoGestion"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:local="clr-namespace:CosturApp.Vista.SeccionesMenu"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Background="{DynamicResource MaterialDesignPaper}" Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- DataGrid de los Anexos -->
+        <DataGrid Grid.Row="1"
+                  ItemsSource="{Binding ListaAnexos}" 
+                  SelectedItem="{Binding AnexoSeleccionado, Mode=TwoWay}" 
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  SelectionMode="Single"
+                  IsReadOnly="True"
+                  Margin="0 0 0 10"
+                  RowBackground="{DynamicResource MaterialDesignPaper}"
+                  AlternatingRowBackground="{DynamicResource MaterialDesignCardBackground}">
+            <DataGrid.InputBindings>
+                <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding EditarAnexoCommand}" />
+            </DataGrid.InputBindings>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Título" Binding="{Binding Titulo}" Width="*" />
+                <DataGridTextColumn Header="Fecha de creación" Binding="{Binding FechaCreacion, StringFormat='dd/MM/yyyy'}" Width="*" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Botones -->
+        <StackPanel Orientation="Horizontal" Grid.Row="2" Margin="0 10" HorizontalAlignment="Left" >
+            <Button Content="Crear" 
+            Command="{Binding CrearAnexoCommand}" 
+            Style="{StaticResource MaterialDesignRaisedButton}"
+            materialDesign:ButtonAssist.CornerRadius="5"
+            Padding="10 5" Margin="10, 0"/>
+            <Button Content="Editar" 
+            Command="{Binding EditarAnexoCommand}" 
+            Style="{StaticResource MaterialDesignOutlinedButton}"
+            materialDesign:ButtonAssist.CornerRadius="5"
+            Padding="10 5" Margin="10, 0"/>
+            <Button Content="Eliminar" 
+            Command="{Binding EliminarAnexoCommand}" 
+            Style="{StaticResource MaterialDesignOutlinedButton}"
+            materialDesign:ButtonAssist.CornerRadius="5"
+            Padding="10 5" Margin="10, 0"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

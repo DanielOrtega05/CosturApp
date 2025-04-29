@@ -37,8 +37,8 @@
             <!-- Pie de página -->
             <TextBlock Text="2025 CosturApp - Versión 1.0" HorizontalAlignment="Center" 
                        Foreground="{DynamicResource MaterialDesignSecondaryText}"/>
-            <TextBlock Text="Daniel Ortega" HorizontalAlignment="Center" 
-                       Foreground="{DynamicResource MaterialDesignHintText}"/>
+            <TextBlock Text="Daniel Ortega" HorizontalAlignment="Center" FontSize="10"
+                       Foreground="{DynamicResource MaterialDesignSecondaryText}"/>
         </StackPanel>
     </Grid>
 </Window>

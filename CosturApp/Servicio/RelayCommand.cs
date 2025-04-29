@@ -23,6 +23,12 @@ namespace CosturApp.Servicio
             _canExecute = canExecute;
         }
 
+        // Notifica si hay algun cambio para que vuelva a revisar el canExecute
+        public void RaiseCanExecuteChanged()
+        {
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+        }
+
         // Metodo que determina si el comando puede ejecutarse
         // Si no se proporciona una funcion _canExecute, devuelve true por defecto (el comando siempre se puede ejecutar)
         public bool CanExecute(object parameter) => _canExecute?.Invoke() ?? true;
