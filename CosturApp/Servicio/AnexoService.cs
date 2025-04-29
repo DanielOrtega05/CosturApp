@@ -106,6 +106,22 @@ namespace CosturApp.Servicio
             return lista;
         }
 
+        // Editar el titulo del anexo
+        public void EditarTituloAnexo(Anexo anexo)
+        {
+            using (var conexion = new SQLiteConnection(_cadenaConexion))
+            {
+                conexion.Open();
+                string query = "UPDATE Anexos SET Titulo = @titulo WHERE Id = @id";
+                using (var cmd = new SQLiteCommand(query, conexion))
+                {
+                    cmd.Parameters.AddWithValue("@titulo", anexo.Titulo);
+                    cmd.Parameters.AddWithValue("@id", anexo.Id);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
         // Elimina el anexo
         public void EliminarAnexo(int id)
         {

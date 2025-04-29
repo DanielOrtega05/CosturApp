@@ -20,6 +20,7 @@ namespace CosturApp.VistaModelo
         private RelayCommand _agregarOrdenCommand;
         private RelayCommand _editarOrdenCommand;
         private RelayCommand _eliminarOrdenCommand;
+        private RelayCommand _editarTituloAnexoCommand;
 
         private OrdenService _ordenService;
 
@@ -32,6 +33,7 @@ namespace CosturApp.VistaModelo
             _agregarOrdenCommand = new RelayCommand(AgregarOrden);
             _editarOrdenCommand = new RelayCommand(EditarOrden, () => OrdenSeleccionada != null);
             _eliminarOrdenCommand = new RelayCommand(EliminarOrden, () => OrdenSeleccionada != null);
+            _editarTituloAnexoCommand = new RelayCommand(EditarTituloAnexo);
         }
 
         public Anexo Anexo => _anexo;
@@ -59,6 +61,7 @@ namespace CosturApp.VistaModelo
             }
         }
 
+        public ICommand EditarTituloAnexoCommand => _editarTituloAnexoCommand;
         public ICommand AgregarOrdenCommand => _agregarOrdenCommand;
         public ICommand EditarOrdenCommand => _editarOrdenCommand;
         public ICommand EliminarOrdenCommand => _eliminarOrdenCommand;
@@ -82,6 +85,29 @@ namespace CosturApp.VistaModelo
             }
 
         }
+
+        private void EditarTituloAnexo()
+        {
+            var ventana = new AnexoCrearWindow();
+
+            ventana.TituloTextBox.Text = _anexo.Titulo;
+
+            if (ventana.ShowDialog() == true)
+            {
+                string nuevoTitulo = ventana.TituloIngresado;
+
+                if (!string.IsNullOrWhiteSpace(nuevoTitulo) && nuevoTitulo != _anexo.Titulo)
+                {
+                    _anexo.Titulo = nuevoTitulo;
+
+                    var anexoService = new AnexoService();
+                    anexoService.EditarTituloAnexo(Anexo);
+
+                    OnPropertyChanged(nameof(Anexo));
+                }
+            }
+        }
+
 
         private void EditarOrden()
         {

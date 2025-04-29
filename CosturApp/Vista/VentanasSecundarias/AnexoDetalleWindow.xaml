@@ -23,13 +23,31 @@
         <!-- Datos del Anexo -->
         <StackPanel Orientation="Horizontal" Margin="0 0 0 16">
             <TextBlock Text="Título: " 
-                       FontWeight="Bold" 
-                       VerticalAlignment="Center"
-                       Foreground="{DynamicResource MaterialDesignBody}"/>
+                        FontWeight="Bold" 
+                        VerticalAlignment="Center"
+                        Foreground="{DynamicResource MaterialDesignBody}"/>
             <TextBlock Text="{Binding Anexo.Titulo}" 
-                       Margin="5 0"
-                       VerticalAlignment="Center"
-                       Foreground="{DynamicResource MaterialDesignBody}"/>
+                        Margin="5 0"
+                        VerticalAlignment="Center"
+                        Foreground="{DynamicResource MaterialDesignBody}"/>
+            <Button Command="{Binding EditarTituloAnexoCommand}" 
+                        Margin="10 0"
+                        ToolTip="Editar título"
+                        Width="32"
+                        Height="32"
+                        Padding="0"
+                        Background="{DynamicResource PrimaryHueMidBrush}"
+                        BorderBrush="{x:Null}"
+                        VerticalAlignment="Center"
+                        materialDesign:ButtonAssist.CornerRadius="16"
+                        HorizontalAlignment="Center">
+                <materialDesign:PackIcon Kind="Pencil" 
+                             Width="18" 
+                             Height="18" 
+                             Foreground="White"
+                             VerticalAlignment="Center"
+                             HorizontalAlignment="Center"/>
+            </Button>
         </StackPanel>
 
         <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0 0 0 16">
