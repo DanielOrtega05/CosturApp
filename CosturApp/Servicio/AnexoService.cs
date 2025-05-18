@@ -63,7 +63,7 @@ namespace CosturApp.Servicio
         }
 
         // Hace insert de los anexos
-        public void AgregarAnexo(Anexo anexo)
+        /*public void AgregarAnexo(Anexo anexo)
         {
             using (var conexion = new SQLiteConnection(_cadenaConexion))
             {
@@ -76,7 +76,33 @@ namespace CosturApp.Servicio
                     cmd.ExecuteNonQuery();
                 }
             }
+        }*/
+
+        public Anexo AgregarAnexo(Anexo anexo)
+        {
+            using (var conexion = new SQLiteConnection(_cadenaConexion))
+            {
+                conexion.Open();
+                string query = "INSERT INTO Anexos (Titulo, FechaCreacion) VALUES (@titulo, @fecha)";
+                using (var cmd = new SQLiteCommand(query, conexion))
+                {
+                    cmd.Parameters.AddWithValue("@titulo", anexo.Titulo);
+                    cmd.Parameters.AddWithValue("@fecha", anexo.FechaCreacion.ToString("o")); // formato ISO 8601 / es el formato para fecha y hora redondeado
+                    cmd.ExecuteNonQuery();
+                }
+
+                // Obtener el ID generado
+                string UltimoId = "SELECT last_insert_rowid()"; // Esto obtiene el ultimo ID generado por AUTOINCREMENT en la conexion actual
+                using (var cmd = new SQLiteCommand(UltimoId, conexion))
+                {
+                    long id = (long)cmd.ExecuteScalar(); // Execute Scalar devuelve el primer resultado 
+                    anexo.Id = (int)id;
+                }
+
+                return anexo;
+            }
         }
+
 
         // Obtiene los anexos para mostrar en el datagrid
         public List<Anexo> ObtenerAnexos()

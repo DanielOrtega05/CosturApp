@@ -84,14 +84,20 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Modelo\Anexo.cs" />
+    <Compile Include="Modelo\Historial.cs" />
     <Compile Include="Modelo\Orden.cs" />
     <Compile Include="Modelo\TipoCamisas.cs" />
     <Compile Include="Servicio\AnexoService.cs" />
+    <Compile Include="Servicio\HistorialService.cs" />
     <Compile Include="Servicio\OrdenService.cs" />
     <Compile Include="VistaModelo\AnexoDetalleViewModel.cs" />
     <Compile Include="VistaModelo\AnexoViewModel.cs" />
+    <Compile Include="VistaModelo\HistorialGestionViewModel.cs" />
     <Compile Include="Vista\SeccionesMenu\AnexoGestion.xaml.cs">
       <DependentUpon>AnexoGestion.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Vista\SeccionesMenu\HistorialGestion.xaml.cs">
+      <DependentUpon>HistorialGestion.xaml</DependentUpon>
     </Compile>
     <Compile Include="Vista\SeccionesMenu\InicioGestion.xaml.cs">
       <DependentUpon>InicioGestion.xaml</DependentUpon>
@@ -129,6 +135,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Vista\SeccionesMenu\AnexoGestion.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Vista\SeccionesMenu\HistorialGestion.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

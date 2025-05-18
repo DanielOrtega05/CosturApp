@@ -68,11 +68,18 @@ namespace CosturApp.Vista.VentanasSecundarias
                 return;
             }
 
+            // Validar que la cantidad sea un numero entero positivo
+            if (!int.TryParse(txbCantidad.Text, out int cantidad) || cantidad <= 0) // El try parse intenta convertir el texto a entero y si puede lo guarda en la variable cantidad
+            {
+                MessageBox.Show("Por favor, introduce una cantidad válida (número entero mayor que 0).", "Cantidad inválida", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             if (IsEditMode)
             {
-                // Si esta en modo edicion, actualizamos los valores de la orden
+                // Si esta en modo edicion, actualiza los valores de la orden
                 Orden.NumeroOrden = txbNumeroOrden.Text;
-                Orden.TotalCamisetas = int.TryParse(txbCantidad.Text, out var cantidad) ? cantidad : 0;
+                Orden.TotalCamisetas = cantidad;
                 Orden.TipoCamisa = (cmbTipoCamisa.SelectedItem as TipoCamisa)?.Nombre;
             }
 

@@ -44,6 +44,7 @@ namespace CosturApp.VistaModelo
         {
             new MenuItemModel { Title = "Inicio", Icon = "Home", View = new Vista.SeccionesMenu.InicioGestion() },
             new MenuItemModel { Title = "Anexo", Icon = "File", View = new Vista.SeccionesMenu.AnexoGestion() },
+            new MenuItemModel { Title = "Historial", Icon = "History", View = new Vista.SeccionesMenu.HistorialGestion() },
             new MenuItemModel { Title = "Ayuda", Icon = "HelpCircle", View = null },
         };
             SelectedMenuItem = MenuItems.FirstOrDefault();

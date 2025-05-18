@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="CosturApp.Vista.SeccionesMenu.HistorialGestion"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:local="clr-namespace:CosturApp.Vista.SeccionesMenu"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <Grid Background="{DynamicResource MaterialDesignPaper}" Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- DataGrid para mostrar los elementos del historial -->
+        <DataGrid Grid.Row="1"
+                  ItemsSource="{Binding ListaHistorial}" 
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  SelectionMode="Single"
+                  IsReadOnly="True"
+                  RowBackground="{DynamicResource MaterialDesignPaper}"
+                  AlternatingRowBackground="{DynamicResource MaterialDesignCardBackground}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Título" Binding="{Binding Titulo}" Width="*" />
+                <DataGridTextColumn Header="Descripción" Binding="{Binding Descripcion}" Width="2*" />
+                <DataGridTextColumn Header="Fecha" Binding="{Binding FechaHistorial, StringFormat='dd/MM/yyyy HH:mm'}" Width="*" />
+            </DataGrid.Columns>
+        </DataGrid>
+        
+    </Grid>
+    
+</UserControl>

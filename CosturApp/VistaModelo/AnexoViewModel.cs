@@ -62,8 +62,8 @@ namespace CosturApp.VistaModelo
                     FechaCreacion = DateTime.Now
                 };
 
-                ListaAnexos.Add(nuevo);
-                _servicio.AgregarAnexo(nuevo);
+                var anexoGuardado = _servicio.AgregarAnexo(nuevo);
+                ListaAnexos.Add(anexoGuardado);
             }
         }
 
