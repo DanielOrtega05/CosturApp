@@ -1,16 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace CosturApp.Modelo
 {
-    // Notifica el cambio a la UI cuando alguna propiedad cambie su valor (Actualiza los bindings)
-    public class Anexo : INotifyPropertyChanged
+    public class Historial : INotifyPropertyChanged
     {
         private int _id;
         private string _titulo;
-        private DateTime _fechaCreacion;
+        private string _descripcion;
+        private DateTime _fechaHistorial;
 
         [Key]
         public int Id
@@ -36,14 +40,27 @@ namespace CosturApp.Modelo
             }
         }
 
-        public DateTime FechaCreacion
+        public string Descripcion
         {
-            get => _fechaCreacion;
+            get => _descripcion;
             set
             {
-                if (_fechaCreacion != value)
+                if (_descripcion != value)
                 {
-                    _fechaCreacion = value;
+                    _descripcion = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public DateTime FechaHistorial
+        {
+            get => _fechaHistorial;
+            set
+            {
+                if (_fechaHistorial != value)
+                {
+                    _fechaHistorial = value;
                     OnPropertyChanged();
                 }
             }

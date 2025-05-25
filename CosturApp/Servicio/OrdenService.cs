@@ -48,17 +48,21 @@ namespace CosturApp.Servicio
             using (var conexion = new SQLiteConnection(_cadenaConexion))
             {
                 conexion.Open();
-                string query = "INSERT INTO Ordenes (NumeroOrden, TotalCamisetas, TipoCamisa, AnexoId) VALUES (@numeroOrden, @totalCamisetas, @tipoCamisa, @anexoId)";
+                string query = "INSERT INTO Ordenes (NumeroOrden, TotalCamisetas, TipoCamisa, AnexoId) VALUES (@numeroOrden, @totalCamisetas, @tipoCamisa, @anexoId); SELECT last_insert_rowid();";
                 using (var cmd = new SQLiteCommand(query, conexion))
                 {
                     cmd.Parameters.AddWithValue("@numeroOrden", orden.NumeroOrden);
                     cmd.Parameters.AddWithValue("@totalCamisetas", orden.TotalCamisetas);
                     cmd.Parameters.AddWithValue("@tipoCamisa", orden.TipoCamisa);
-                    cmd.Parameters.AddWithValue("@anexoId", orden.AnexoId); // Relacionado con el anexo
-                    cmd.ExecuteNonQuery();
+                    cmd.Parameters.AddWithValue("@anexoId", orden.AnexoId);
+
+                    // Devuelve el ID generado de la base de datos
+                    long idGenerado = (long)cmd.ExecuteScalar();
+                    orden.Id = (int)idGenerado;
                 }
             }
         }
+
 
         // Obtener las ordenes asociadas a un anexo concreto
         public List<Orden> ObtenerOrdenesPorAnexo(int idAnexo)

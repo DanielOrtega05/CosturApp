@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
@@ -20,8 +22,10 @@ namespace CosturApp.VistaModelo
         private RelayCommand _agregarOrdenCommand;
         private RelayCommand _editarOrdenCommand;
         private RelayCommand _eliminarOrdenCommand;
+        private RelayCommand _editarTituloAnexoCommand;
 
         private OrdenService _ordenService;
+        private HistorialService _historialService = new HistorialService();
 
         public AnexoDetalleViewModel(Anexo anexo)
         {
@@ -32,6 +36,7 @@ namespace CosturApp.VistaModelo
             _agregarOrdenCommand = new RelayCommand(AgregarOrden);
             _editarOrdenCommand = new RelayCommand(EditarOrden, () => OrdenSeleccionada != null);
             _eliminarOrdenCommand = new RelayCommand(EliminarOrden, () => OrdenSeleccionada != null);
+            _editarTituloAnexoCommand = new RelayCommand(EditarTituloAnexo);
         }
 
         public Anexo Anexo => _anexo;
@@ -42,8 +47,17 @@ namespace CosturApp.VistaModelo
             get => _ordenes;
             set
             {
+                if (_ordenes != null)
+                    _ordenes.CollectionChanged -= Ordenes_CollectionChanged;
+
                 _ordenes = value;
                 OnPropertyChanged();
+
+                if (_ordenes != null)
+                    _ordenes.CollectionChanged += Ordenes_CollectionChanged;
+
+                OnPropertyChanged(nameof(TotalCamisetasMes));
+
             }
         }
 
@@ -59,9 +73,12 @@ namespace CosturApp.VistaModelo
             }
         }
 
+        public ICommand EditarTituloAnexoCommand => _editarTituloAnexoCommand;
         public ICommand AgregarOrdenCommand => _agregarOrdenCommand;
         public ICommand EditarOrdenCommand => _editarOrdenCommand;
         public ICommand EliminarOrdenCommand => _eliminarOrdenCommand;
+
+        public int TotalCamisetasMes => Ordenes?.Sum(o => o.TotalCamisetas) ?? 0;
 
         private void AgregarOrden()
         {
@@ -79,20 +96,69 @@ namespace CosturApp.VistaModelo
 
                 _ordenService.AgregarOrden(nuevaOrden);
                 Ordenes.Add(nuevaOrden);
+
+                _historialService.AgregarHistorial(new Historial
+                {
+                    Titulo = "Orden creada",
+                    Descripcion = $"Se creó la orden {nuevaOrden.NumeroOrden} con {nuevaOrden.TotalCamisetas} camisetas de tipo {nuevaOrden.TipoCamisa}.",
+                    FechaHistorial = DateTime.Now
+                });
+
             }
 
         }
+
+        private void EditarTituloAnexo()
+        {
+            var ventana = new AnexoCrearWindow();
+
+            ventana.TituloTextBox.Text = _anexo.Titulo;
+
+            if (ventana.ShowDialog() == true)
+            {
+                string nuevoTitulo = ventana.TituloIngresado;
+
+                if (!string.IsNullOrWhiteSpace(nuevoTitulo) && nuevoTitulo != _anexo.Titulo)
+                {
+                    _anexo.Titulo = nuevoTitulo;
+
+                    var anexoService = new AnexoService();
+                    anexoService.EditarTituloAnexo(Anexo);
+
+                    OnPropertyChanged(nameof(Anexo));
+                }
+            }
+        }
+
 
         private void EditarOrden()
         {
             if (OrdenSeleccionada != null)
             {
+                var ordenAntes = new Orden
+                {
+                    NumeroOrden = OrdenSeleccionada.NumeroOrden,
+                    TotalCamisetas = OrdenSeleccionada.TotalCamisetas,
+                    TipoCamisa = OrdenSeleccionada.TipoCamisa
+                };
+
                 var ventana = new OrdenCrearWindow(OrdenSeleccionada); // Pasamos la orden seleccionada a la ventana
 
                 if (ventana.ShowDialog() == true)
                 {
                     // Si la ventana devuelve true, se ha actualizado la orden
                     _ordenService.EditarOrden(OrdenSeleccionada); // Actualizamos la orden en la base de datos
+
+                    _historialService.AgregarHistorial(new Historial
+                    {
+                        Titulo = "Orden editada",
+                        Descripcion = $"Orden '{ordenAntes.NumeroOrden}' del anexo '{_anexo.Titulo}' fue editada:\n" +
+                      $"- Número de orden: {ordenAntes.NumeroOrden} → {OrdenSeleccionada.NumeroOrden}\n" +
+                      $"- Total camisetas: {ordenAntes.TotalCamisetas} → {OrdenSeleccionada.TotalCamisetas}\n" +
+                      $"- Tipo camisa: {ordenAntes.TipoCamisa} → {OrdenSeleccionada.TipoCamisa}",
+                        FechaHistorial = DateTime.Now
+                    });
+
                 }
             }
         }
@@ -107,10 +173,53 @@ namespace CosturApp.VistaModelo
                                 MessageBoxImage.Warning);
                 if (confirmar == MessageBoxResult.Yes)
                 {
+                    string numeroOrdenEliminada = OrdenSeleccionada.NumeroOrden;
                     _ordenService.EliminarOrden(OrdenSeleccionada.Id);
                     Ordenes.Remove(OrdenSeleccionada);
+
+                    _historialService.AgregarHistorial(new Historial
+                    {
+                        Titulo = "Orden eliminada",
+                        Descripcion = $"Se eliminó la orden {numeroOrdenEliminada}.",
+                        FechaHistorial = DateTime.Now
+                    });
+
                 }
             }
+        }
+
+        // Se suscribe a cada objeto orden dentro de la coleccion para saber si se ha modificado alguna orden. Es decir que cada vez que hay un cambio
+        // este metodo se ejecutara.
+        private void Orden_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            // Si la propiedad que ha cambiado en la orden es total camisetas, entonces total camisetas mes se actualiza con el nuevo valor
+            if (e.PropertyName == nameof(Orden.TotalCamisetas))
+            {
+                OnPropertyChanged(nameof(TotalCamisetasMes));
+            }
+        }
+
+        private void Ordenes_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            // Si se elimina una orden tambien se actualiza el total de camisetas del mes
+            if (e.OldItems != null)
+            {
+                foreach (Orden oldOrden in e.OldItems)
+                {
+                    oldOrden.PropertyChanged -= Orden_PropertyChanged;
+                }
+            }
+
+            // Al igual que si se añade una orden nueva
+            if (e.NewItems != null)
+            {
+                foreach (Orden newOrden in e.NewItems)
+                {
+                    newOrden.PropertyChanged += Orden_PropertyChanged;
+                }
+            }
+
+            OnPropertyChanged(nameof(TotalCamisetasMes));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
