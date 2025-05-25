@@ -8,11 +8,15 @@ namespace CosturApp.Servicio
 {
     public class OrdenService
     {
-        private string _rutaDB = "anexos.db";
+        private string _rutaDB = Path.Combine(@"C:\CosturApp\data", "anexos.db");
         private string _cadenaConexion => $"Data Source={_rutaDB};Version=3;";
 
         public OrdenService()
         {
+            string carpeta = Path.GetDirectoryName(_rutaDB);
+            if (!Directory.Exists(carpeta))
+                Directory.CreateDirectory(carpeta);
+
             // Si la base de datos no existe, la crea
             if (!File.Exists(_rutaDB))
                 SQLiteConnection.CreateFile(_rutaDB);

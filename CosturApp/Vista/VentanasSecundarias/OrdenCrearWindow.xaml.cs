@@ -48,7 +48,7 @@ namespace CosturApp.Vista.VentanasSecundarias
             {
                 new TipoCamisa { Id = 1, Nombre = "Vestir" },
                 new TipoCamisa { Id = 2, Nombre = "Laboral" },
-                new TipoCamisa { Id = 3, Nombre = "Guayavera" },
+                new TipoCamisa { Id = 3, Nombre = "Guayabera" },
                 new TipoCamisa { Id = 4, Nombre = "Arreglos" },
                 new TipoCamisa { Id = 5, Nombre = "Encargos" },
                 new TipoCamisa { Id = 6, Nombre = "Muestras" },

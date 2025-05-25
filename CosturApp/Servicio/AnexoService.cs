@@ -11,11 +11,15 @@ namespace CosturApp.Servicio
 {
     public class AnexoService
     {
-        private string _rutaDB = "anexos.db";
+        private string _rutaDB = Path.Combine(@"C:\CosturApp\data", "anexos.db");
         private string _cadenaConexion => $"Data Source={_rutaDB};Version=3;";
 
         public AnexoService()
         {
+            string carpeta = Path.GetDirectoryName(_rutaDB);
+            if (!Directory.Exists(carpeta))
+                Directory.CreateDirectory(carpeta);
+
             // si no existe lo crea
             if (!File.Exists(_rutaDB))
                 SQLiteConnection.CreateFile(_rutaDB);

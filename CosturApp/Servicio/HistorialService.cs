@@ -8,12 +8,16 @@ namespace CosturApp.Servicio
 {
     public class HistorialService
     {
-        private string _rutaDB = "anexos.db";
+        private string _rutaDB = Path.Combine(@"C:\CosturApp\data", "anexos.db");
         private string _cadenaConexion => $"Data Source={_rutaDB};Version=3;";
         public static event Action<Historial> HistorialAgregado;
 
         public HistorialService()
         {
+            string carpeta = Path.GetDirectoryName(_rutaDB);
+            if (!Directory.Exists(carpeta))
+                Directory.CreateDirectory(carpeta);
+
             if (!File.Exists(_rutaDB))
                 SQLiteConnection.CreateFile(_rutaDB);
 
