@@ -125,14 +125,6 @@ namespace CosturApp.VistaModelo
                     var anexoService = new AnexoService();
                     anexoService.EditarTituloAnexo(Anexo);
 
-                    _historialService.AgregarHistorial(new Historial
-                    {
-                        Titulo = "Anexo editado",
-                        Descripcion = $"Se cambió el título del anexo a '{nuevoTitulo}'.",
-                        FechaHistorial = DateTime.Now
-                    });
-
-
                     OnPropertyChanged(nameof(Anexo));
                 }
             }
@@ -160,7 +152,7 @@ namespace CosturApp.VistaModelo
                     _historialService.AgregarHistorial(new Historial
                     {
                         Titulo = "Orden editada",
-                        Descripcion = $"Orden '{ordenAntes.NumeroOrden}' fue editada:\n" +
+                        Descripcion = $"Orden '{ordenAntes.NumeroOrden}' del anexo '{_anexo.Titulo}' fue editada:\n" +
                       $"- Número de orden: {ordenAntes.NumeroOrden} → {OrdenSeleccionada.NumeroOrden}\n" +
                       $"- Total camisetas: {ordenAntes.TotalCamisetas} → {OrdenSeleccionada.TotalCamisetas}\n" +
                       $"- Tipo camisa: {ordenAntes.TipoCamisa} → {OrdenSeleccionada.TipoCamisa}",

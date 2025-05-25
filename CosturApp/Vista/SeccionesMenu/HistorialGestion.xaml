@@ -12,6 +12,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!-- DataGrid para mostrar los elementos del historial -->
@@ -29,7 +30,17 @@
                 <DataGridTextColumn Header="Fecha" Binding="{Binding FechaHistorial, StringFormat='dd/MM/yyyy HH:mm'}" Width="*" />
             </DataGrid.Columns>
         </DataGrid>
-        
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0 0 0 10" Grid.Row="2">
+            <Button Content="Eliminar Historial"
+                Command="{Binding EliminarTodoHistorialCommand}"
+                Style="{StaticResource MaterialDesignOutlinedButton}"
+                Background="{DynamicResource MaterialDesignAccentBrush}"
+                materialDesign:ButtonAssist.CornerRadius="5"
+                Margin="0,10,0,10"
+                Padding="10,5"/>
+        </StackPanel>
+
     </Grid>
     
 </UserControl>

@@ -10,6 +10,7 @@ namespace CosturApp.Servicio
     {
         private string _rutaDB = "anexos.db";
         private string _cadenaConexion => $"Data Source={_rutaDB};Version=3;";
+        public static event Action<Historial> HistorialAgregado;
 
         public HistorialService()
         {
@@ -54,6 +55,8 @@ namespace CosturApp.Servicio
                     cmd.ExecuteNonQuery();
                 }
             }
+
+            HistorialAgregado?.Invoke(historial); // Notifica el cambio al que este escuchando
         }
 
         // Obtener todas las entradas del historial
