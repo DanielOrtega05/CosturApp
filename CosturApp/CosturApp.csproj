@@ -119,6 +119,7 @@
     <Compile Include="Servicio\AnexoService.cs" />
     <Compile Include="Servicio\HistorialService.cs" />
     <Compile Include="Servicio\OrdenService.cs" />
+    <Compile Include="Servicio\TipoCamisaService.cs" />
     <Compile Include="VistaModelo\AnexoDetalleViewModel.cs" />
     <Compile Include="VistaModelo\AnexoViewModel.cs" />
     <Compile Include="VistaModelo\HistorialGestionViewModel.cs" />

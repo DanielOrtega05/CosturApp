@@ -53,12 +53,13 @@ namespace CosturApp.Servicio
             {
                 conexion.Open();
                 string query = @"CREATE TABLE IF NOT EXISTS Ordenes (
-                            Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                            NumeroOrden TEXT NOT NULL,
-                            TotalCamisetas INTEGER NOT NULL,
-                            AnexoId INTEGER,
-                            FOREIGN KEY(AnexoId) REFERENCES Anexos(Id)
-                         )";
+                                Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                                NumeroOrden TEXT NOT NULL,
+                                TotalCamisetas INTEGER NOT NULL,
+                                TipoCamisaId INTEGER NOT NULL,
+                                AnexoId INTEGER,
+                                FOREIGN KEY(TipoCamisaId) REFERENCES TipoCamisa(Id),
+                                FOREIGN KEY(AnexoId) REFERENCES Anexos(Id));";
                 using (var cmd = new SQLiteCommand(query, conexion))
                 {
                     cmd.ExecuteNonQuery();
