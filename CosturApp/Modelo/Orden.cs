@@ -33,14 +33,29 @@ namespace CosturApp.Modelo
             }
         }
 
-        private string _tipoCamisa;
-        public string TipoCamisa
+        private int _tipoCamisaId;
+        public int TipoCamisaId
+        {
+            get => _tipoCamisaId;
+            set
+            {
+                _tipoCamisaId = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private TipoCamisa _tipoCamisa { get; set; }
+        public TipoCamisa TipoCamisa
         {
             get => _tipoCamisa;
             set
             {
                 _tipoCamisa = value;
                 OnPropertyChanged();
+
+                // Opcional: actualizar también el ID automáticamente si se cambia el objeto
+                if (_tipoCamisa != null)
+                    TipoCamisaId = _tipoCamisa.Id;
             }
         }
 

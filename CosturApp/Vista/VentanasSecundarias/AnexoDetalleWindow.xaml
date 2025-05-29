@@ -97,6 +97,12 @@
                     Command="{Binding EliminarOrdenCommand}"
                     materialDesign:ButtonAssist.CornerRadius="5"
                     Style="{StaticResource MaterialDesignOutlinedButton}"/>
+            
+            <Button Content="Exportar a PDF" 
+                    Command="{Binding ExportarPdfCommand}" 
+                    Margin="10 0"
+                    materialDesign:ButtonAssist.CornerRadius="5"
+                    Style="{StaticResource MaterialDesignOutlinedButton}"/>
         </StackPanel>
 
         <Label Grid.Row="3"

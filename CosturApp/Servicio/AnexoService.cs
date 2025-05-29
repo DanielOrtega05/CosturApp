@@ -11,11 +11,15 @@ namespace CosturApp.Servicio
 {
     public class AnexoService
     {
-        private string _rutaDB = "anexos.db";
+        private string _rutaDB = Path.Combine(@"C:\CosturApp\data", "anexos.db");
         private string _cadenaConexion => $"Data Source={_rutaDB};Version=3;";
 
         public AnexoService()
         {
+            string carpeta = Path.GetDirectoryName(_rutaDB);
+            if (!Directory.Exists(carpeta))
+                Directory.CreateDirectory(carpeta);
+
             // si no existe lo crea
             if (!File.Exists(_rutaDB))
                 SQLiteConnection.CreateFile(_rutaDB);
@@ -49,12 +53,13 @@ namespace CosturApp.Servicio
             {
                 conexion.Open();
                 string query = @"CREATE TABLE IF NOT EXISTS Ordenes (
-                            Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                            NumeroOrden TEXT NOT NULL,
-                            TotalCamisetas INTEGER NOT NULL,
-                            AnexoId INTEGER,
-                            FOREIGN KEY(AnexoId) REFERENCES Anexos(Id)
-                         )";
+                                Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                                NumeroOrden TEXT NOT NULL,
+                                TotalCamisetas INTEGER NOT NULL,
+                                TipoCamisaId INTEGER NOT NULL,
+                                AnexoId INTEGER,
+                                FOREIGN KEY(TipoCamisaId) REFERENCES TipoCamisa(Id),
+                                FOREIGN KEY(AnexoId) REFERENCES Anexos(Id));";
                 using (var cmd = new SQLiteCommand(query, conexion))
                 {
                     cmd.ExecuteNonQuery();
