@@ -123,6 +123,7 @@
     <Compile Include="VistaModelo\AnexoDetalleViewModel.cs" />
     <Compile Include="VistaModelo\AnexoViewModel.cs" />
     <Compile Include="VistaModelo\HistorialGestionViewModel.cs" />
+    <Compile Include="VistaModelo\TipoCamisaViewModel.cs" />
     <Compile Include="Vista\SeccionesMenu\AnexoGestion.xaml.cs">
       <DependentUpon>AnexoGestion.xaml</DependentUpon>
     </Compile>
@@ -132,6 +133,9 @@
     <Compile Include="Vista\SeccionesMenu\InicioGestion.xaml.cs">
       <DependentUpon>InicioGestion.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Vista\SeccionesMenu\TipoCamisaGestion.xaml.cs">
+      <DependentUpon>TipoCamisaGestion.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Vista\VentanasSecundarias\AnexoCrearWindow.xaml.cs">
       <DependentUpon>AnexoCrearWindow.xaml</DependentUpon>
     </Compile>
@@ -140,6 +144,9 @@
     </Compile>
     <Compile Include="Vista\VentanasSecundarias\OrdenCrearWindow.xaml.cs">
       <DependentUpon>OrdenCrearWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Vista\VentanasSecundarias\TipoCamisaCrearWindow.xaml.cs">
+      <DependentUpon>TipoCamisaCrearWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="Vista\GestionPrincipalWindow.xaml">
       <SubType>Designer</SubType>
@@ -176,6 +183,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Vista\SeccionesMenu\TipoCamisaGestion.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Vista\VentanasSecundarias\AnexoCrearWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -185,6 +196,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Vista\VentanasSecundarias\OrdenCrearWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Vista\VentanasSecundarias\TipoCamisaCrearWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

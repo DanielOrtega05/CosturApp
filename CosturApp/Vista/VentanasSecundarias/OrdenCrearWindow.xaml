@@ -37,13 +37,30 @@
                      Foreground="{DynamicResource MaterialDesignBody}" 
                      Margin="0 0 0 10"/>
 
-            <ComboBox x:Name="cmbTipoCamisa"
-                    materialDesign:HintAssist.Hint="Tipo de Camisa"
-                    Style="{StaticResource MaterialDesignComboBox}" 
-                    DisplayMemberPath="Nombre"
-                    SelectedValuePath="Id"
-                    Background="{DynamicResource MaterialDesignPaper}" 
-                    Foreground="{DynamicResource MaterialDesignBody}" />
+            <Grid Margin="0 0 0 10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <ComboBox x:Name="cmbTipoCamisa"
+                          Grid.Column="0"
+                          materialDesign:HintAssist.Hint="Tipo de Camisa"
+                          Style="{StaticResource MaterialDesignComboBox}" 
+                          DisplayMemberPath="Nombre"
+                          SelectedValuePath="Id"
+                          Background="{DynamicResource MaterialDesignPaper}" 
+                          Foreground="{DynamicResource MaterialDesignBody}" />
+
+                <Button Grid.Column="1"
+                        Content="+"
+                        Margin="5 0 0 0"
+                        Width="30"
+                        Height="30"
+                        Click="AbrirListaTiposCamisa_Click"
+                        Style="{StaticResource MaterialDesignIconButton}" 
+                        ToolTip="Gestionar Tipos de Camisa" />
+            </Grid>
         </StackPanel>
 
         <StackPanel Grid.Row="2"
