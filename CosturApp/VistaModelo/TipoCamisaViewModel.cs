@@ -102,7 +102,7 @@ namespace CosturApp.VistaModelo
             }
         }
 
-        private void RecargarLista()
+        public void RecargarLista()
         {
             ListaTiposCamisa.Clear();
             foreach (var tipo in _servicio.ObtenerTodos())

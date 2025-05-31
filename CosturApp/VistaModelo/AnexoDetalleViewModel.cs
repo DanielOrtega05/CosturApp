@@ -20,30 +20,35 @@ namespace CosturApp.VistaModelo
     // Esta clase se encarga de manejar la logica y datos para la vista detalle del anexo
     public class AnexoDetalleViewModel : INotifyPropertyChanged
     {
-        // Variables privadas que guardan el anexo, las ordenes y la orden que esta seleccionada
         private Anexo _anexo;
         private ObservableCollection<Orden> _ordenes;
         private Orden _ordenSeleccionada;
 
-        // Comandos que se usan para enlazar con botones y asi ejecutar funciones
+        // Comandos que se usan para enlazar con botones y asi ejecutar una serie de funciones
         private RelayCommand _agregarOrdenCommand;
         private RelayCommand _editarOrdenCommand;
         private RelayCommand _eliminarOrdenCommand;
         private RelayCommand _editarTituloAnexoCommand;
         private RelayCommand _exportarPdfCommand;
 
-        // Servicios para manejar la logica de negocio de ordenes y el historial
         private OrdenService _ordenService;
+        private TipoCamisaService _tipoCamisaService;
         private HistorialService _historialService = new HistorialService();
 
-        // Constructor recibe un anexo y carga las ordenes asociadas a ese anexo
         public AnexoDetalleViewModel(Anexo anexo)
         {
             _anexo = anexo;
             _ordenService = new OrdenService();
+            _tipoCamisaService = new TipoCamisaService();
 
             // Aqui se obtienen las ordenes del anexo y se guardan en una coleccion observable
-            Ordenes = new ObservableCollection<Orden>(_ordenService.ObtenerOrdenesPorAnexo(anexo.Id));
+            var ordenes = _ordenService.ObtenerOrdenesPorAnexo(anexo.Id);
+            foreach (var orden in ordenes)
+            {
+                orden.TipoCamisa = _tipoCamisaService.ObtenerPorId(orden.TipoCamisaId);
+            }
+
+            Ordenes = new ObservableCollection<Orden>(ordenes);
 
             // Se crean los comandos asignandoles las funciones que se ejecutan al activarlos
             _agregarOrdenCommand = new RelayCommand(AgregarOrden);
@@ -104,12 +109,29 @@ namespace CosturApp.VistaModelo
         // Metodo para agregar una nueva orden
         private void AgregarOrden()
         {
-            // Abre ventana para crear orden
             var ventana = new OrdenCrearWindow();
 
             // Si se confirma la ventana, se crea la orden y se añade a la coleccion y a la BD
             if (ventana.ShowDialog() == true)
             {
+                string numeroOrden = ventana.txbNumeroOrden.Text.Trim();
+                int tipoCamisaId = ((TipoCamisa)ventana.cmbTipoCamisa.SelectedItem)?.Id ?? 0;
+
+                // Validar si ya existe una orden con el mismo numero y tipo de camisa
+                bool ordenExistente = Ordenes.Any(o =>
+                    o.NumeroOrden.Equals(numeroOrden, StringComparison.OrdinalIgnoreCase) &&
+                    o.TipoCamisaId == tipoCamisaId);
+
+                if (ordenExistente)
+                {
+                    MessageBox.Show(
+                        $"Ya existe una orden con el número '{numeroOrden}' para este tipo de camisa.",
+                        "Error",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                    return;
+                }
+
                 var nuevaOrden = new Orden
                 {
                     NumeroOrden = ventana.txbNumeroOrden.Text,
@@ -118,14 +140,16 @@ namespace CosturApp.VistaModelo
                     AnexoId = _anexo.Id
                 };
 
+                nuevaOrden.TipoCamisa = _tipoCamisaService.ObtenerPorId(tipoCamisaId);
+
                 _ordenService.AgregarOrden(nuevaOrden);
                 Ordenes.Add(nuevaOrden);
 
                 // Se añade registro al historial de cambios
                 _historialService.AgregarHistorial(new Historial
                 {
-                    Titulo = "Orden creada",
-                    Descripcion = $"Se creo la orden {nuevaOrden.NumeroOrden} con {nuevaOrden.TotalCamisetas} camisetas de tipo {nuevaOrden.TipoCamisa}.",
+                    Titulo = $"Orden creada en el anexo {_anexo.Titulo}",
+                    Descripcion = $"Se creo la orden {nuevaOrden.NumeroOrden} con {nuevaOrden.TotalCamisetas} camisetas de tipo {nuevaOrden.TipoCamisa.Nombre}.",
                     FechaHistorial = DateTime.Now
                 });
 
@@ -138,7 +162,6 @@ namespace CosturApp.VistaModelo
         {
             var ventana = new AnexoCrearWindow();
 
-            // Se pone el titulo actual en la caja de texto para editar
             ventana.TituloTextBox.Text = _anexo.Titulo;
 
             if (ventana.ShowDialog() == true)
@@ -174,11 +197,29 @@ namespace CosturApp.VistaModelo
 
                 };
 
-                // Se abre ventana con la orden seleccionada para editarla
                 var ventana = new OrdenCrearWindow(OrdenSeleccionada);
 
                 if (ventana.ShowDialog() == true)
                 {
+                    string nuevoNumero = ventana.txbNumeroOrden.Text.Trim();
+                    int nuevoTipoId = ((TipoCamisa)ventana.cmbTipoCamisa.SelectedItem)?.Id ?? 0;
+
+                    // Validar si ya existe otra orden (excluyendo la actual) con el mismo numero y tipo
+                    bool ordenExistente = Ordenes.Any(o =>
+                        o.Id != OrdenSeleccionada.Id &&
+                        o.NumeroOrden.Equals(nuevoNumero, StringComparison.OrdinalIgnoreCase) && // StringComparison.OrdinalIgnoreCase = Evita el duplicado por diferencia de mayusculas
+                        o.TipoCamisaId == nuevoTipoId);
+
+                    if (ordenExistente)
+                    {
+                        MessageBox.Show(
+                            $"Ya existe otra orden con el número '{nuevoNumero}' para este tipo de camisa.",
+                            "Error",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error);
+                        return;
+                    }
+
                     // Si se confirma, se actualiza la orden en la BD
                     _ordenService.EditarOrden(OrdenSeleccionada);
 
@@ -215,14 +256,16 @@ namespace CosturApp.VistaModelo
                 if (confirmar == MessageBoxResult.Yes)
                 {
                     string numeroOrdenEliminada = OrdenSeleccionada.NumeroOrden;
+                    int numeroCamisasEliminada = OrdenSeleccionada.TotalCamisetas;
+                    TipoCamisa tipoCamisaEliminada = _tipoCamisaService.ObtenerPorId(OrdenSeleccionada.TipoCamisaId);
                     _ordenService.EliminarOrden(OrdenSeleccionada.Id);
                     Ordenes.Remove(OrdenSeleccionada);
 
                     // Se añade registro al historial de eliminacion
                     _historialService.AgregarHistorial(new Historial
                     {
-                        Titulo = "Orden eliminada",
-                        Descripcion = $"Se elimino la orden {numeroOrdenEliminada}.",
+                        Titulo = $"Orden eliminada del anexo {_anexo.Titulo}",
+                        Descripcion = $"Se elimino la orden {numeroOrdenEliminada}, contenia {numeroCamisasEliminada} camisetas, del tipo {tipoCamisaEliminada.Nombre}.",
                         FechaHistorial = DateTime.Now
                     });
 

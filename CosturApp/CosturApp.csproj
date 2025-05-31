@@ -127,6 +127,9 @@
     <Compile Include="Vista\SeccionesMenu\AnexoGestion.xaml.cs">
       <DependentUpon>AnexoGestion.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Vista\SeccionesMenu\AyudaGestion.xaml.cs">
+      <DependentUpon>AyudaGestion.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Vista\SeccionesMenu\HistorialGestion.xaml.cs">
       <DependentUpon>HistorialGestion.xaml</DependentUpon>
     </Compile>
@@ -172,6 +175,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Vista\SeccionesMenu\AnexoGestion.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Vista\SeccionesMenu\AyudaGestion.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -222,6 +229,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Documentacion\Manual CosturApp - Primera Version.pdf" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

@@ -26,5 +26,13 @@ namespace CosturApp.Vista.SeccionesMenu
             InitializeComponent();
             DataContext = new TipoCamisaViewModel();
         }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is TipoCamisaViewModel vm)
+            {
+                vm.RecargarLista();
+            }
+        }
     }
 }
