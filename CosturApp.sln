@@ -5,6 +5,8 @@ VisualStudioVersion = 17.13.35919.96
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosturApp", "CosturApp\CosturApp.csproj", "{5E4708E6-C7BF-4B93-AE9F-55573D243126}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "CosturApp Installer", "CosturApp Installer\CosturApp Installer.vdproj", "{F07B02C5-1C4E-226C-0D0E-B4EC1E4D51A1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,8 @@ Global
 		{5E4708E6-C7BF-4B93-AE9F-55573D243126}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E4708E6-C7BF-4B93-AE9F-55573D243126}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E4708E6-C7BF-4B93-AE9F-55573D243126}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F07B02C5-1C4E-226C-0D0E-B4EC1E4D51A1}.Debug|Any CPU.ActiveCfg = Debug
+		{F07B02C5-1C4E-226C-0D0E-B4EC1E4D51A1}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -155,5 +155,20 @@ namespace CosturApp.Servicio
             return null;
         }
 
+        public void EliminarPorId(int id)
+        {
+            using (var conexion = new SQLiteConnection(_cadenaConexion))
+            {
+                conexion.Open();
+                string query = "DELETE FROM TipoCamisa WHERE Id = @id";
+                using (var cmd = new SQLiteCommand(query, conexion))
+                {
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+
     }
 }

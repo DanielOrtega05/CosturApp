@@ -53,7 +53,6 @@ namespace CosturApp.Modelo
                 _tipoCamisa = value;
                 OnPropertyChanged();
 
-                // Opcional: actualizar también el ID automáticamente si se cambia el objeto
                 if (_tipoCamisa != null)
                     TipoCamisaId = _tipoCamisa.Id;
             }

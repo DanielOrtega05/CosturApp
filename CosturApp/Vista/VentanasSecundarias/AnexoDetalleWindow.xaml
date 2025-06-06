@@ -75,6 +75,7 @@
             </DataGrid.InputBindings>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Nº Orden" Binding="{Binding NumeroOrden}" Width="*"/>
+                <DataGridTextColumn Header="Tipo de Camisa" Binding="{Binding TipoCamisa.Nombre}" Width="*"/>
                 <DataGridTextColumn Header="Total Camisetas" Binding="{Binding TotalCamisetas}" Width="*"/>
             </DataGrid.Columns>
         </DataGrid>

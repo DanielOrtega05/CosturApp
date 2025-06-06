@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using CosturApp.Modelo;
 using CosturApp.Servicio;
+using CosturApp.Vista.SeccionesMenu;
 
 namespace CosturApp.Vista.VentanasSecundarias
 {
@@ -92,6 +93,27 @@ namespace CosturApp.Vista.VentanasSecundarias
 
             DialogResult = true; // Esto hará que ShowDialog() devuelva true para que se pueda recuperar la informacion desde la ventana anterior
             Close();
+        }
+
+        private void AbrirListaTiposCamisa_Click(object sender, RoutedEventArgs e)
+        {
+            // Crear la ventana que alojará el UserControl
+            var ventana = new Window
+            {
+                Title = "Gestionar Tipos de Camisa",
+                Content = new TipoCamisaGestion(), // Tu UserControl
+                Height = 400,
+                Width = 600,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                Owner = this, // Asumiendo que estás en una ventana (OrdenCrearWindow)
+                ResizeMode = ResizeMode.NoResize,
+                Background = (Brush)Application.Current.Resources["MaterialDesignPaper"],
+            };
+            
+            ventana.ShowDialog();
+
+            // Recargar los tipos de camisa después de cerrar la ventana
+            CargarComboBox();
         }
 
         private void Cancelar_Click(object sender, RoutedEventArgs e)
