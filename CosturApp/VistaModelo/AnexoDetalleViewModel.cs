@@ -118,8 +118,10 @@ namespace CosturApp.VistaModelo
                 int tipoCamisaId = ((TipoCamisa)ventana.cmbTipoCamisa.SelectedItem)?.Id ?? 0;
 
                 // Validar si ya existe una orden con el mismo numero y tipo de camisa
+                string numeroOrdenNormalizado = NormalizarNumeroOrden(numeroOrden);
+
                 bool ordenExistente = Ordenes.Any(o =>
-                    o.NumeroOrden.Equals(numeroOrden, StringComparison.OrdinalIgnoreCase) &&
+                    NormalizarNumeroOrden(o.NumeroOrden) == numeroOrdenNormalizado &&
                     o.TipoCamisaId == tipoCamisaId);
 
                 if (ordenExistente)
@@ -203,11 +205,14 @@ namespace CosturApp.VistaModelo
                 {
                     string nuevoNumero = ventana.txbNumeroOrden.Text.Trim();
                     int nuevoTipoId = ((TipoCamisa)ventana.cmbTipoCamisa.SelectedItem)?.Id ?? 0;
+                    int nuevaCantidad = int.TryParse(ventana.txbCantidad.Text, out var cantidad) ? cantidad : 0;
+
+                    string numeroNormalizado = NormalizarNumeroOrden(nuevoNumero);
 
                     // Validar si ya existe otra orden (excluyendo la actual) con el mismo numero y tipo
                     bool ordenExistente = Ordenes.Any(o =>
                         o.Id != OrdenSeleccionada.Id &&
-                        o.NumeroOrden.Equals(nuevoNumero, StringComparison.OrdinalIgnoreCase) && // StringComparison.OrdinalIgnoreCase = Evita el duplicado por diferencia de mayusculas
+                        NormalizarNumeroOrden(o.NumeroOrden) == numeroNormalizado &&
                         o.TipoCamisaId == nuevoTipoId);
 
                     if (ordenExistente)
@@ -217,8 +222,21 @@ namespace CosturApp.VistaModelo
                             "Error",
                             MessageBoxButton.OK,
                             MessageBoxImage.Error);
+
+                        // Revertir los cambios visuales en la orden seleccionada
+                        OrdenSeleccionada.NumeroOrden = ordenAntes.NumeroOrden;
+                        OrdenSeleccionada.TotalCamisetas = ordenAntes.TotalCamisetas;
+                        OrdenSeleccionada.TipoCamisaId = ordenAntes.TipoCamisaId;
+                        OrdenSeleccionada.TipoCamisa = _tipoCamisaService.ObtenerPorId(ordenAntes.TipoCamisaId);
+
                         return;
                     }
+
+                    // Aplicar los nuevos valores solo si pasa la validacion
+                    OrdenSeleccionada.NumeroOrden = nuevoNumero;
+                    OrdenSeleccionada.TotalCamisetas = nuevaCantidad;
+                    OrdenSeleccionada.TipoCamisaId = nuevoTipoId;
+                    OrdenSeleccionada.TipoCamisa = _tipoCamisaService.ObtenerPorId(nuevoTipoId);
 
                     // Si se confirma, se actualiza la orden en la BD
                     _ordenService.EditarOrden(OrdenSeleccionada);
@@ -468,6 +486,15 @@ namespace CosturApp.VistaModelo
 
             return null;
         }
+
+        private string NormalizarNumeroOrden(string numero)
+        {
+            return new string(numero
+                .Where(c => !char.IsWhiteSpace(c) && c != '-') 
+                .ToArray())
+                .ToUpperInvariant(); 
+        }
+
     }
 
 }
