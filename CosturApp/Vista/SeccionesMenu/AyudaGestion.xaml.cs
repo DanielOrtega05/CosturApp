@@ -31,7 +31,7 @@ namespace CosturApp.Vista.SeccionesMenu
             try
             {
                 // Asegúrate de que la ruta sea correcta y el PDF exista
-                string rutaManual = @"..\..\Documentacion\Manual CosturApp - Primera Version.pdf";
+                string rutaManual = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Documentacion", "Manual CosturApp - Primera Version.pdf");
 
                 if (System.IO.File.Exists(rutaManual))
                 {
