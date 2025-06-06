@@ -57,17 +57,26 @@ namespace CosturApp.VistaModelo
                 string nombre = ventana.NombreIngresado?.Trim();
                 if (!string.IsNullOrWhiteSpace(nombre))
                 {
-                    _servicio.AgregarSiNoExiste(nombre);
+                    bool fueAgregado = _servicio.AgregarSiNoExiste(nombre);
                     RecargarLista();
 
-                    _historialService.AgregarHistorial(new Historial
+                    if (fueAgregado)
                     {
-                        Titulo = "Tipo de camisa agregado",
-                        Descripcion = $"Se agregó el tipo de camisa '{nombre}'.",
-                        FechaHistorial = DateTime.Now
-                    });
+                        RecargarLista();
 
-                    MessageBox.Show($"Tipo de camisa '{nombre}' agregado correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                        _historialService.AgregarHistorial(new Historial
+                        {
+                            Titulo = "Tipo de camisa agregado",
+                            Descripcion = $"Se agregó el tipo de camisa '{nombre}'.",
+                            FechaHistorial = DateTime.Now
+                        });
+
+                        MessageBox.Show($"Tipo de camisa '{nombre}' agregado correctamente.", "Éxito", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show($"El tipo de camisa '{nombre}' ya existe.", "Duplicado", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
                 }
             }
         }

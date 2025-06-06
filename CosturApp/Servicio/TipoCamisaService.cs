@@ -89,16 +89,31 @@ namespace CosturApp.Servicio
             return lista;
         }
 
-        public void AgregarSiNoExiste(string nombre)
+        public bool AgregarSiNoExiste(string nombre)
         {
             using (var conexion = new SQLiteConnection(_cadenaConexion))
             {
                 conexion.Open();
-                string query = "INSERT OR IGNORE INTO TipoCamisa (Nombre) VALUES (@nombre)";
+
+                // Comprobar si ya existe el tipo
+                string verificarQuery = "SELECT COUNT(*) FROM TipoCamisa WHERE LOWER(Nombre) = LOWER(@nombre)";
+                using (var verificarCmd = new SQLiteCommand(verificarQuery, conexion))
+                {
+                    verificarCmd.Parameters.AddWithValue("@nombre", nombre);
+                    long count = (long)verificarCmd.ExecuteScalar();
+
+                    if (count > 0)
+                    {
+                        return false; 
+                    }
+                }
+
+                string query = "INSERT INTO TipoCamisa (Nombre) VALUES (@nombre)";
                 using (var cmd = new SQLiteCommand(query, conexion))
                 {
                     cmd.Parameters.AddWithValue("@nombre", nombre);
                     cmd.ExecuteNonQuery();
+                    return true;
                 }
             }
         }
