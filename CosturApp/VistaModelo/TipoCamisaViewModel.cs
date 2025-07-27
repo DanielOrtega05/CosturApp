@@ -50,7 +50,7 @@ namespace CosturApp.VistaModelo
 
         private void AgregarTipoCamisa()
         {
-            var ventana = new TipoCamisaCrearWindow(); // Asegúrate de tener esta ventana implementada
+            var ventana = new TipoCamisaCrearWindow();
 
             if (ventana.ShowDialog() == true)
             {
