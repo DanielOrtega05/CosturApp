@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using CosturApp.Modelo;
 using CosturApp.Servicio;
 using CosturApp.Vista.SeccionesMenu;
+using CosturApp.VistaModelo;
 
 namespace CosturApp.Vista.VentanasSecundarias
 {
@@ -43,6 +44,21 @@ namespace CosturApp.Vista.VentanasSecundarias
             txbCantidad.Text = orden.TotalCamisetas.ToString();
             cmbTipoCamisa.SelectedItem = _tiposCamisa.FirstOrDefault(t => t.Id == orden.TipoCamisaId);
 
+        }
+
+        public OrdenCrearWindow(int? tipoCamisaPreseleccionadoId = null)
+        {
+            InitializeComponent();
+            CargarComboBox();
+
+            if (tipoCamisaPreseleccionadoId.HasValue)
+            {
+                cmbTipoCamisa.SelectedItem = _tiposCamisa.FirstOrDefault(t => t.Id == tipoCamisaPreseleccionadoId.Value);
+            }
+            else
+            {
+                cmbTipoCamisa.SelectedIndex = -1; // Nada seleccionado por defecto
+            }
         }
 
         private void CargarComboBox()
@@ -89,6 +105,11 @@ namespace CosturApp.Vista.VentanasSecundarias
                     TipoCamisa = tipoSeleccionado,
                     TipoCamisaId = tipoSeleccionado?.Id ?? 0
                 };
+            }
+
+            if (cmbTipoCamisa.SelectedItem is TipoCamisa tipoSeleccionadoFinal)
+            {
+                AnexoDetalleViewModel.UltimoTipoCamisaSeleccionadoId = tipoSeleccionadoFinal.Id;
             }
 
             DialogResult = true; // Esto hará que ShowDialog() devuelva true para que se pueda recuperar la informacion desde la ventana anterior

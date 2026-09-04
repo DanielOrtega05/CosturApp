@@ -35,6 +35,9 @@ namespace CosturApp.VistaModelo
         private TipoCamisaService _tipoCamisaService;
         private HistorialService _historialService = new HistorialService();
 
+        // Se guarda el último tipo de camisa seleccionado
+        public static int? UltimoTipoCamisaSeleccionadoId { get; set; } = null;
+
         public AnexoDetalleViewModel(Anexo anexo)
         {
             _anexo = anexo;
@@ -109,7 +112,7 @@ namespace CosturApp.VistaModelo
         // Metodo para agregar una nueva orden
         private void AgregarOrden()
         {
-            var ventana = new OrdenCrearWindow();
+            var ventana = new OrdenCrearWindow(UltimoTipoCamisaSeleccionadoId);
 
             // Si se confirma la ventana, se crea la orden y se añade a la coleccion y a la BD
             if (ventana.ShowDialog() == true)
